@@ -1,0 +1,20 @@
+
+<div class="col-md-12">
+	<h1>Add new list</h1>
+	<form class="form_add_list">
+		<div class="col-lg-6 col-md-5">
+				<!-- Chat Message -->
+		  		<input type="text" ng-model="listName" class="form-control" placeholder="Type list name here">
+		  	<button class="btn btn-default col-lg-2 col-md-2" ng-click="addList()">Add</button>
+	</form>
+</div>
+
+<div class="col-md-12">
+	<h1>Lists</h1>
+	Filter <input type="text" ng-model="search.name">
+	<table  class="table">
+		<tr class="list" ng-repeat="list in listList | orderBy:'name' | filter:search">
+			<td class="col-md-12 td_class"><a href="#/showlist/{{list.id}}">{{list.name}}</a></td>
+		</tr>
+	</table>
+</div>

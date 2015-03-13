@@ -1,0 +1,18 @@
+<h1>List</h1>
+
+<h2>Add new item</h2>
+<div class="col-md-12">
+	<form class="form_add_list">
+		<div class="col-lg-6 col-md-5">
+		  		<input type="text" ng-model="itemText" class="form-control" placeholder="Type an item here">
+		  	<button class="btn btn-default col-lg-2 col-md-2" ng-click="addItem()">Add</button>
+	</form>
+</div>
+
+<h2>Things to do</h2>
+<div ng-repeat="item in itemList.items | orderBy: ['finished', 'text']">
+	
+	<input type="checkbox" ng-model="item.finished" ng-change="changeFinishedStatus(item.id, item.finished)">
+       {{item.text}}
+
+</div>
