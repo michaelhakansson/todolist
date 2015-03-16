@@ -7,11 +7,11 @@
 
 module.exports = {
 
-	subscribe: function (req, res) {
-		// Get all of the users
-		Item.find().exec(function (err, items) {
-			// Subscribe the requesting socket to all items
-			Item.subscribe(req.socket, items);
+	subscribeToList: function (req, res) {
+		var listId = req.param('id');
+		sails.sockets.join(req.socket, listId);
+		res.json({
+			message: 'Subscribed to list with id '+listId+'.'
 		});
 	},
 
@@ -23,35 +23,34 @@ module.exports = {
 
 	addItem: function (req, res) {
 		var data_from_client = req.params.all();
-
-		if (req.isSocket && req.method === 'POST') {
-			// New item added by connected client. Add to list.
-			Item.create(data_from_client)
-				.exec(function(err, data_from_client){
-					Item.publishCreate({id: data_from_client.id, text: data_from_client.text, list: data_from_client.list});
+		var listId = req.body.list; // ID of the list of the item to be updated
+		List.findOne({id: listId}).exec(function (err, found) {
+			if (err || typeof found === 'undefined') {
+				console.error("Error when trying to add item to list " + listId + ".");
+			} else {
+				Item.create(data_from_client).exec(function(err, data_from_client){
+					sails.sockets.broadcast(listId, 'itemAdded', {	id: data_from_client.id, 
+													text: data_from_client.text, 
+													list: data_from_client.list, 
+													finished: false	});
 				});
-		} else if (req.isSocket) {
-			// Subscribe to list changes.
-			Item.watch(req.socket);
-		}
+			}
+		});
 	},
 
-	// an UPDATE action
-    updateItem: function (req, res, next) {
-        var criteria = {};
-        criteria = _.merge({}, req.params.all(), req.body);
+	updateItem: function (req, res, next) {
+		var id = req.param('id'); // ID of item to be updated
+		var listId = req.body.list; // ID of the list of the item to be updated
+		var data_from_client = req.params.all();
+		var newStatus = data_from_client.finished;
 
-        var id = req.param('id');
-
-        if (!id) {
-            return res.badRequest('No id provided.');
-        }
-
-        if (req.isSocket && req.method === 'PUT') {
-	        Item.update(id, criteria).exec(function(err, updated){
-	        	Item.publishUpdate(updated[0].id, {finished: criteria.finished, list: updated[0].list})
-	        });
-        }
-    }
+		if (req.isSocket && req.method === 'PUT') {
+			Item.update(id, {finished: newStatus}).exec(function(err, updated){
+				sails.sockets.broadcast(listId, 'updatedItem', {	id: updated[0].id, 
+																	finished: newStatus, 
+																	list: updated[0].list});
+			});
+		}
+	}
 
 };
