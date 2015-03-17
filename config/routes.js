@@ -38,6 +38,7 @@ module.exports.routes = {
 //  
 
 'put /item/:id': 'ItemController.updateItem',
+'put /item/remove/:id': 'ItemController.removeItem',
 'get /list/subscribe/:id': 'ItemController.subscribeToList'
 // 'get /item/subscribe': 'ItemController.subscribe'
 

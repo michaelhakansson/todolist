@@ -13,6 +13,6 @@
 <div ng-repeat="item in itemList.items | orderBy: ['finished', 'text']">
 	
 	<input type="checkbox" ng-model="item.finished" ng-change="changeFinishedStatus(item.id, item.finished)">
-       {{item.text}} - {{item.finished}}
+       {{item.text}} - <a href="" ng-click="removeItem(item.id)">X</a>
 
 </div>

@@ -29,13 +29,32 @@ todoApp.controller('ItemController',['$http','$log','$scope','$routeParams','$fi
 		$scope.$digest();
 	});
 
+	io.socket.on('itemRemoved', function(obj){
+		var index = -1;
+		// Find index of the removed item
+		_.each($scope.itemList.items, function(data, idx) {
+			if (_.isEqual(data.id, parseInt(obj.id))) {
+				index = idx;
+				return;
+			}
+		});
+		// Remove item from the view
+		$scope.itemList.items.splice(index, 1);
+		// Call $scope.$digest to make the changes in UI
+		$scope.$digest();
+	});
+
 	$scope.addItem = function() {
 		io.socket.post('/item/additem/', {list: listId, text: $scope.itemText});
 		$scope.itemText = "";
 	};
 
+	$scope.removeItem = function(id) {
+		io.socket.put('/item/remove/' + id, {list: listId});
+	};
+
 	$scope.changeFinishedStatus = function(id, newStatus) {
 		io.socket.put('/item/' + id, {finished: newStatus, list: listId});
-	}
+	};
 
 }]);
