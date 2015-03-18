@@ -10,11 +10,6 @@ module.exports = {
   attributes: {
   	name: 'string',
 
-  	collaborators: {
-  		collection: 'user',
-  		via: 'lists'
-  	},
-
   	items: {
   		collection: 'item',
   		via: 'list'

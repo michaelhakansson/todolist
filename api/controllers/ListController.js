@@ -35,7 +35,6 @@ module.exports = {
 			List.create(data_from_client)
 				.exec(function (err, data_from_client) {
 					sails.sockets.broadcast('lists', 'listAdded', {id: data_from_client.id, name: data_from_client.name});
-					List.find({id: data_from_client.id}).populate('collaborators').exec(console.log);
 				});
 		} else if (req.isSocket) {
 			// Subscribe to list changes.
