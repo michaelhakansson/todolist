@@ -1,6 +1,7 @@
 todoApp.controller('ListListController',['$http','$log','$scope',function($http,$log,$scope){
 	// $http , $scope , $log injections
-	io.socket.get('/list/addlist');
+	io.socket.get('/lists/subscribe');
+	$scope.$log = $log;
 
 	// Fecth already existing lists
 	$http.get('/list')
@@ -9,14 +10,11 @@ todoApp.controller('ListListController',['$http','$log','$scope',function($http,
 		$scope.listList = response_data;
 	});
 
-	io.socket.on('list', function(obj){
-		//Check whether the verb is created or not
-		if(obj.verb === 'created'){
-			// Add the data to current chatList
-			$scope.listList.push(obj.data);
-			// Call $scope.$digest to make the changes in UI
-			$scope.$digest();
-		}
+	io.socket.on('listAdded', function(obj){
+		// Add the data to current chatList
+		$scope.listList.push(obj);
+		// Call $scope.$digest to make the changes in UI
+		$scope.$digest();
 	});
 
 	$scope.addList = function() {

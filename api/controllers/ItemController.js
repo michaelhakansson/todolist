@@ -7,23 +7,8 @@
 
 module.exports = {
 
-	subscribeToList: function (req, res) {
-		var listId = req.param('id');
-		sails.sockets.join(req.socket, listId);
-		res.json({
-			message: 'Subscribed to list with id '+listId+'.'
-		});
-	},
-
-	getItems: function (req, res) {
-		Item.find({}).exec(function(e,listOfUsers){
-			Item.subscribe(req.socket,listOfUsers);
-		});
-	},
-
 	addItem: function (req, res) {
 		var data_from_client = req.params.all();
-		console.log(data_from_client.id);
 		var listId = req.body.list; // ID of the list of the item to be updated
 		List.findOne({id: listId}).exec(function (err, found) {
 			if (err || typeof found === 'undefined') {
@@ -49,7 +34,6 @@ module.exports = {
 		var data_from_client = req.params.all();
 		var listId = req.body.list; // ID of the list of the item to be removed
 		var itemId = data_from_client.id; // ID of the item to be removed
-		console.log("id from data from client before findone: " + data_from_client.id);
 		List.findOne({id: listId}).exec(function (err, found) {
 			if (err || typeof found === 'undefined') {
 				console.error("Error when trying to remove item " + itemId + " from list " + listId + ".");

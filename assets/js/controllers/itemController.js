@@ -7,9 +7,7 @@ todoApp.controller('ItemController',['$http','$log','$scope','$routeParams','$fi
 	io.socket.get('/list/subscribe/' + listId);
 
 	// Fecth already existing items
-	$http.get('/list/' + listId)
-		.success(function(response_data){
-
+	$http.get('/list/' + listId).success(function(response_data){
 		$scope.itemList = response_data;
 	});
 
@@ -17,14 +15,14 @@ todoApp.controller('ItemController',['$http','$log','$scope','$routeParams','$fi
 		var itemId = obj.id;
 		var newStatus = obj.finished;
 
-		var changedItem = $filter('filter')($scope.itemList.items, {id: itemId})[0];
+		var changedItem = $filter('filter')($scope.itemList, {id: itemId})[0];
 		changedItem.finished = newStatus;
 		$scope.$digest();
 	});
 
 	io.socket.on('itemAdded', function(obj){
 		// Add the data to current list
-		$scope.itemList.items.push(obj);
+		$scope.itemList.push(obj);
 		// Call $scope.$digest to make the changes in UI
 		$scope.$digest();
 	});
@@ -32,14 +30,14 @@ todoApp.controller('ItemController',['$http','$log','$scope','$routeParams','$fi
 	io.socket.on('itemRemoved', function(obj){
 		var index = -1;
 		// Find index of the removed item
-		_.each($scope.itemList.items, function(data, idx) {
+		_.each($scope.itemList, function(data, idx) {
 			if (_.isEqual(data.id, parseInt(obj.id))) {
 				index = idx;
 				return;
 			}
 		});
 		// Remove item from the view
-		$scope.itemList.items.splice(index, 1);
+		$scope.itemList.splice(index, 1);
 		// Call $scope.$digest to make the changes in UI
 		$scope.$digest();
 	});

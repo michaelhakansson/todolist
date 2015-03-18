@@ -10,7 +10,7 @@
 </div>
 
 <h2>Things to do</h2>
-<div ng-repeat="item in itemList.items | orderBy: ['finished', 'text']">
+<div ng-repeat="item in itemList | orderBy: ['finished', 'text']">
 	
 	<input type="checkbox" ng-model="item.finished" ng-change="changeFinishedStatus(item.id, item.finished)">
        {{item.text}} - <a href="" ng-click="removeItem(item.id)">X</a>

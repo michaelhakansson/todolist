@@ -5,13 +5,6 @@ todoApp.controller('ListController',['$http','$log','$scope','$routeParams',func
 
 	var listId = $routeParams.id;
 
-	// Fecth already existing items
-	$http.get('/list/'+listId)
-		.success(function(response_data){
-
-		$scope.itemList = response_data;
-	});
-
 	io.socket.on('list',function(obj){
 		//Check whether the verb is created or not
 		if(obj.verb === 'created'){
