@@ -4,6 +4,7 @@ todoApp.controller('ItemController',['$http','$log','$scope','$routeParams','$fi
 	$scope.$log = $log;
 	var listId = $routeParams.id;
 
+	// Subscribe to changes in this list
 	io.socket.get('/list/subscribe/' + listId);
 
 	// Fecth already existing items
@@ -52,7 +53,7 @@ todoApp.controller('ItemController',['$http','$log','$scope','$routeParams','$fi
 	};
 
 	$scope.changeFinishedStatus = function(id, newStatus) {
-		io.socket.put('/item/' + id, {finished: newStatus, list: listId});
+		io.socket.put('/item/update/' + id + '/' + newStatus + '/' + listId);
 	};
 
 }]);

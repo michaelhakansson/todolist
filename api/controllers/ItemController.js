@@ -46,14 +46,14 @@ module.exports = {
 	},
 
 	updateItem: function (req, res, next) {
-		var id = req.param('id'); // ID of item to be updated
-		var listId = req.body.list; // ID of the list of the item to be updated
-		var data_from_client = req.params.all();
-		var newStatus = data_from_client.finished;
+		var id = req.param('itemId'); // ID of item to be updated
+		var newStatus = req.param('newStatus') === 'true';
+		var listId = req.param('listId'); // ID of the list of the item to be updated
 
 		if (req.isSocket && req.method === 'PUT') {
 			Item.update(id, {finished: newStatus}).exec(function(err, updated){
-				sails.sockets.broadcast(listId, 'updatedItem', {	id: updated[0].id, 
+				sails.sockets.broadcast(listId, 'updatedItem', {	id: updated[0].id,
+																	text: updated[0].text, 
 																	finished: newStatus, 
 																	list: updated[0].list});
 			});
