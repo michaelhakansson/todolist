@@ -35,6 +35,8 @@ module.exports = {
 	},
 
 	removeItem: function (req, res) {
+		var itemId = req.param('id'); // ID of the list of the item to be removed
+		
 		Item.findOne({id: itemId}).exec(function (err, found) {
 			var listId = found.list;
 
