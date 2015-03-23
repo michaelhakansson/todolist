@@ -45,6 +45,7 @@ module.exports.routes = {
 
 'get /lists/subscribe': 'ListController.subscribeToLists',
 
+'post /item/create/:listId/:text': 'ItemController.addItem',
 'put /item/update/:itemId/:newStatus/:listId': 'ItemController.updateItem',
 'put /item/remove/:id': 'ItemController.removeItem',
 

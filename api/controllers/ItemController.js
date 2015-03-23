@@ -8,20 +8,24 @@
 module.exports = {
 
 	addItem: function (req, res) {
-		var data_from_client = req.params.all();
-		var listId = req.body.list; // ID of the list of the item to be updated
+		var listId = req.param('listId'); // ID of the list of the item to be updated
+		var itemText = req.param('text'); // ID of the list of the item to be updated
+
+		var newItem = {list: listId, text: itemText};
+
 		List.findOne({id: listId}).exec(function (err, found) {
+			console.log(listId);
 			if (err || typeof found === 'undefined') {
 				console.error("Error when trying to add item to list " + listId + ".");
 			} else {
-				Item.create(data_from_client).exec(function(err, data_from_client) {
-					if (err || typeof data_from_client === 'undefined') {
+				Item.create(newItem).exec(function(err, newItem) {
+					if (err || typeof newItem === 'undefined') {
 						console.error("Error when trying to add item to list " + listId + ".");
 					} else {
 						sails.sockets.broadcast(listId, 'itemAdded', 
-							{	id: data_from_client.id, 
-								text: data_from_client.text, 
-								list: data_from_client.list, 
+							{	id: newItem.id, 
+								text: newItem.text, 
+								list: newItem.list, 
 								finished: false	
 							});
 					}
@@ -31,11 +35,6 @@ module.exports = {
 	},
 
 	removeItem: function (req, res) {
-		// var data_from_client = req.params.all();
-		// var listId = req.body.list; // ID of the list of the item to be removed
-		// var itemId = data_from_client.id; // ID of the item to be removed
-		// var listId = req.param('listId'); // ID of the list of the item to be removed
-		var itemId = req.param('id'); // ID of the list of the item to be removed
 		Item.findOne({id: itemId}).exec(function (err, found) {
 			var listId = found.list;
 

@@ -44,12 +44,12 @@ todoApp.controller('ItemController',['$http','$log','$scope','$routeParams','$fi
 	});
 
 	$scope.addItem = function() {
-		io.socket.post('/item/additem/', {list: listId, text: $scope.itemText});
+		io.socket.post('/item/create/' + listId + "/" + $scope.itemText);
 		$scope.itemText = "";
 	};
 
 	$scope.removeItem = function(id) {
-		io.socket.put('/item/remove/' + id, {list: listId});
+		io.socket.put('/item/remove/' + id);
 	};
 
 	$scope.changeFinishedStatus = function(id, newStatus) {
