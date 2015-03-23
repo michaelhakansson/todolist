@@ -31,14 +31,18 @@ module.exports = {
 	},
 
 	removeItem: function (req, res) {
-		var data_from_client = req.params.all();
-		var listId = req.body.list; // ID of the list of the item to be removed
-		var itemId = data_from_client.id; // ID of the item to be removed
-		List.findOne({id: listId}).exec(function (err, found) {
+		// var data_from_client = req.params.all();
+		// var listId = req.body.list; // ID of the list of the item to be removed
+		// var itemId = data_from_client.id; // ID of the item to be removed
+		// var listId = req.param('listId'); // ID of the list of the item to be removed
+		var itemId = req.param('id'); // ID of the list of the item to be removed
+		Item.findOne({id: itemId}).exec(function (err, found) {
+			var listId = found.list;
+
 			if (err || typeof found === 'undefined') {
-				console.error("Error when trying to remove item " + itemId + " from list " + listId + ".");
+				console.error("Error when trying to remove item " + itemId + ".");
 			} else {
-				Item.destroy(data_from_client).exec(function(err, data_from_client){
+				Item.destroy({list: listId, id: itemId}).exec(function(err, data){
 					sails.sockets.broadcast(listId, 'itemRemoved', {id: itemId});
 				});
 			}
