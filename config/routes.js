@@ -39,11 +39,14 @@ module.exports.routes = {
 
 
 'get /list': 'ListController.getLists',
-'get /lists/subscribe': 'ListController.subscribeToLists',
 'get /list/:id': 'ListController.getItems',
+'get /list/subscribe/:id': 'ListController.subscribeToList',
+'put /list/remove/:id': 'ListController.removeList',
+
+'get /lists/subscribe': 'ListController.subscribeToLists',
+
 'put /item/update/:itemId/:newStatus/:listId': 'ItemController.updateItem',
 'put /item/remove/:id': 'ItemController.removeItem',
-'get /list/subscribe/:id': 'ListController.subscribeToList'
 // 'get /item/subscribe': 'ItemController.subscribe'
 
   /***************************************************************************

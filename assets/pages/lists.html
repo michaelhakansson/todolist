@@ -14,7 +14,9 @@
 	Filter <input type="text" ng-model="search.name">
 	<table  class="table">
 		<tr class="list" ng-repeat="list in listList | orderBy:'name' | filter:search">
-			<td class="col-md-12 td_class"><a href="#/showlist/{{list.id}}">{{list.name}}</a></td>
+			<td class="col-md-12 td_class">
+				<a href="#/showlist/{{list.id}}">{{list.name}}</a> - <a href="" ng-click="removeList(list.id)">X</a>
+			</td>
 		</tr>
 	</table>
 </div>

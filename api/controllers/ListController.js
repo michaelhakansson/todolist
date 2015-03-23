@@ -42,6 +42,17 @@ module.exports = {
 		}
 	},
 
+	removeList:function (req, res) {
+		var data_from_client = req.params.all();
+		if (req.isSocket && req.method === 'PUT') {
+			// New list added by connected client. Add to list.
+			List.destroy(data_from_client)
+				.exec(function (err, data_from_client) {
+					sails.sockets.broadcast('lists', 'listRemoved', {id: req.param("id")});
+				});
+		}
+	},
+
 	subscribeToList: function (req, res) {
 		var listId = req.param('id');
 		sails.sockets.join(req.socket, listId);
