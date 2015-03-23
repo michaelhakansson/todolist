@@ -47,7 +47,6 @@ module.exports.routes = {
 
 'put /item/update/:itemId/:newStatus/:listId': 'ItemController.updateItem',
 'put /item/remove/:id': 'ItemController.removeItem',
-// 'get /item/subscribe': 'ItemController.subscribe'
 
   /***************************************************************************
   *                                                                          *

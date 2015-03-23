@@ -20,7 +20,6 @@ todoApp.controller('ListListController',['$http','$log','$scope',function($http,
 
 	io.socket.on('listRemoved', function(obj){
 		var index = -1;
-
 		// Find index of the removed item
 		_.each($scope.listList, function(data, idx) {
 			if (_.isEqual(data.id, parseInt(obj.id))) {
@@ -28,10 +27,8 @@ todoApp.controller('ListListController',['$http','$log','$scope',function($http,
 				return;
 			}
 		});
-
 		// Remove list from the view
 		$scope.listList.splice(index, 1);
-
 		// Call $scope.$digest to make the changes in UI
 		$scope.$digest();
 	});
