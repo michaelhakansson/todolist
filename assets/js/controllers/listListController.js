@@ -53,12 +53,6 @@ todoApp.controller('ListListController',['$http','$log','$scope',function($http,
 	});
 
 
-
-
-
-
-
-
 	$scope.addList = function() {
 		io.socket.post('/list/addlist/', {name: $scope.listName, collaborators: 2});
 		$scope.listName = "";
