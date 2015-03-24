@@ -29,12 +29,13 @@ module.exports = {
 	},
 
 	addList:function (req, res) {
-		var data_from_client = req.params.all();
+		var listName = req.param('listName');
+//		var data_from_client = req.params.all();
 		if (req.isSocket && req.method === 'POST') {
 			// New list added by connected client. Add to list.
-			List.create(data_from_client)
-				.exec(function (err, data_from_client) {
-					sails.sockets.broadcast('lists', 'listAdded', {id: data_from_client.id, name: data_from_client.name});
+			List.create({name: listName})
+				.exec(function (err, res) {
+					sails.sockets.broadcast('lists', 'listAdded', {id: res.id, name: res.name});
 				});
 		} else if (req.isSocket) {
 			// Subscribe to list changes.

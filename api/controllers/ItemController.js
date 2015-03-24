@@ -14,7 +14,6 @@ module.exports = {
 		var newItem = {list: listId, text: itemText};
 
 		List.findOne({id: listId}).exec(function (err, found) {
-			console.log(listId);
 			if (err || typeof found === 'undefined') {
 				console.error("Error when trying to add item to list " + listId + ".");
 			} else {

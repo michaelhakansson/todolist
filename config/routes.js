@@ -40,6 +40,7 @@ module.exports.routes = {
 
 'get /list': 'ListController.getLists',
 'get /list/:id': 'ListController.getItems',
+'post /list/create/:listName': 'ListController.addList',
 'get /list/subscribe/:id': 'ListController.subscribeToList',
 'put /list/remove/:id': 'ListController.removeList',
 
