@@ -1,18 +1,48 @@
-<h1>List</h1>
-
-<h2>Add new item</h2>
-<div class="col-md-12">
-	<form class="form_add_list">
-		<div class="col-lg-6 col-md-5">
-		  		<input type="text" ng-model="itemText" class="form-control" placeholder="Type an item here">
-		  	<button class="btn btn-default col-lg-2 col-md-2" ng-click="addItem()">Add</button>
-	</form>
+<div class="row">
+	<div class="col-md-12">
+		<h1>Things to do</h1>
+	</div>
 </div>
 
-<h2>Things to do</h2>
-<div ng-repeat="item in itemList | orderBy: ['finished', 'text']">
-	
-	<input type="checkbox" ng-model="item.finished" ng-change="changeFinishedStatus(item.id, item.finished)">
-       {{item.text}} - <a href="" ng-click="removeItem(item.id)">X</a>
+<div class="row">
+	<div class="col-md-12">
+		<h3>Add new item</h3>
+	</div>
+</div>
 
+<div class="row">
+		<form class="form_add_list">
+		<div class="col-xs-8 col-md-6">
+	  		<input type="text" ng-model="itemText" class="form-control" placeholder="Type an item here">
+		</div>
+  			<button class="btn btn-success col-xs-3 col-lg-2 col-md-2" ng-click="addItem()">Add</button>
+		</form>
+</div>
+
+
+<div class="row">
+	<div class="col-md-12">
+		<h3>Items</h3>
+	<div class="col-md-12">
+
+	<div class="col-md-8">
+		<table  class="table">
+			<!-- <tr class="list" ng-repeat="item in itemList | orderBy: ['finished', 'text']"> -->
+			<tr class="list" ng-repeat="item in itemList | orderBy: ['text']">
+				
+				<td class="col-xs-1 td_class">
+					<input type="checkbox" ng-model="item.finished" ng-change="changeFinishedStatus(item.id, item.finished)">
+				</td>
+
+				<td class="col-md-9 td_class">
+					{{item.text}}
+				</td>
+
+				<td class="col-md-2 td_class text-right">
+					<a href="" ng-click="removeItem(item.id)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+				</td>
+			</tr>
+			
+		</table>
+	</div>
 </div>
